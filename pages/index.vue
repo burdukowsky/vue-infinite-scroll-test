@@ -1,65 +1,37 @@
 <template>
-  <section class="container">
-    <div>
-      <app-logo/>
-      <h1 class="title">
-        vue-infinite-scroll-test
-      </h1>
-      <h2 class="subtitle">
-        Nuxt.js project
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green">Documentation</a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey">GitHub</a>
-      </div>
-    </div>
-  </section>
+  <div v-infinite-scroll="loadMore"
+       infinite-scroll-disabled="busy"
+       infinite-scroll-distance="10">
+    <p v-for="item in data" :key="item.name">
+      {{item.name}}
+    </p>
+    <p v-if="busy">Loading...</p>
+  </div>
 </template>
 
 <script>
-import AppLogo from '~/components/AppLogo.vue'
+  export default {
+    data() {
+      return {
+        count: 0,
+        data: [],
+        busy: false
+      }
+    },
+    methods: {
+      loadMore() {
+        this.busy = true;
 
-export default {
-  components: {
-    AppLogo
+        setTimeout(() => {
+          for (let i = 0, j = 10; i < j; i++) {
+            this.data.push({name: ++this.count});
+          }
+          this.busy = false;
+        }, 1000);
+      }
+    }
   }
-}
 </script>
 
 <style>
-.container {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.title {
-  font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* 1 */
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
 </style>
-
